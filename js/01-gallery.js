@@ -1,9 +1,12 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
-
 const divRef = document.querySelector('.gallery');
+
+const cardsMarkup = createGallary(galleryItems);
+
+divRef.insertAdjacentHTML('beforeend', cardsMarkup);
+divRef.addEventListener('click', onImageClick);
 
 function createGallary(items) {
   return items
@@ -21,10 +24,18 @@ function createGallary(items) {
     .join('');
 }
 
-const cardsMarkup = createGallary(galleryItems);
+function onImageClick(evt) {
+  evt.preventDefault();
+  if (evt.target.nodeName !== 'IMG') return;
 
-divRef.insertAdjacentHTML('beforeend', cardsMarkup);
+  const instance = basicLightbox.create(`
+    <img src="${evt.target.dataset.source}" width="800" height="600">
+`);
 
-divRef.addEventListener('click', onImageClick);
-
-console.log(cardsMarkup);
+  instance.show();
+}
+divRef.addEventListener('keydown', event => {
+  if (event.code === 27) {
+    instance.close();
+  }
+});
