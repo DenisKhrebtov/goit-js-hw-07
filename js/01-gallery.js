@@ -31,11 +31,17 @@ function onImageClick(evt) {
   const instance = basicLightbox.create(`
     <img src="${evt.target.dataset.source}" width="800" height="600">
 `);
-
   instance.show();
+  onShow: () => {
+    document.addEventListener('keydown', onKeyAction);
+  },
+    function onKeyAction(event) {
+      if (event.key === 'Escape') {
+        instance.close();
+      }
+    };
 }
-divRef.addEventListener('keydown', event => {
-  if (event.code === 27) {
-    instance.close();
-  }
-});
+// divRef.addEventListener('keydown', event => {
+//   if (event.code === 'Tab') {
+//     instance.close();
+//   }
